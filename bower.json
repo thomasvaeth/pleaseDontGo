@@ -1,10 +1,10 @@
 {
-  "name": "please-dont-go",
+  "name": "pleaseDontGo",
   "description": "A JavaScript plugin used for changing the title and the favicon of the website when a visitor navigates to another tab.",
   "main": "./dist/pleaseDontGo.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/thomasvaeth/please-dont-go.git"
+    "url": "https://github.com/thomasvaeth/pleaseDontGo.git"
   },
   "authors": [
     "Thomas Vaeth <thomas.vaeth@gmail.com> (http://thomasvaeth.com/)"
@@ -14,7 +14,7 @@
     "favicon",
     "title"
   ],
-  "homepage": "https://github.com/thomasvaeth/please-dont-go",
+  "homepage": "https://github.com/thomasvaeth/pleaseDontGo",
   "ignore": [
     "**/.*",
     "node_modules",
