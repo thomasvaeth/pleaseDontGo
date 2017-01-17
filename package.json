@@ -1,7 +1,7 @@
 {
   "name": "please-dont-go",
   "version": "1.0.0",
-  "description": "",
+  "description": "A JavaScript plugin used for changing the title and the favicon of the website when a visitor navigates to another tab.",
   "main": "./dist/pleaseDontGo.js",
   "repository": {
     "type": "git",
@@ -13,8 +13,8 @@
     "start": "gulp"
   },
   "keywords": [
-    "fetch",
-    "instagram"
+    "favicon",
+    "title"
   ],
   "author": "Thomas Vaeth <thomas.vaeth@gmail.com> (http://thomasvaeth.com/)",
   "license": "MIT",
