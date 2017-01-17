@@ -6,25 +6,23 @@
   } else {
     root.myPlugin = factory(root);
   }
-})(typeof global !== "undefined" ? global : this.window || this.global, function (root) {
+})(typeof global !== 'undefined' ? global : this.window || this.global, function (root) {
 
   'use strict';
 
 
-  var myPlugin = {}; 
-  var supports = !!document.querySelector && !!root.addEventListener; 
-  var settings, eventTimeout;
+  var pleaseDontGo = {};
+  var supports = !!document.querySelector && !!root.addEventListener;
+  var settings, checked, favicon, originalTitle, originalFavicon;
 
   var defaults = {
-    someVar: 123,
-    initClass: 'js-myplugin',
-    callbackBefore: function () {},
-    callbackAfter: function () {}
+    newTitle: 'Please Don\'t Go',
+    newFavicon: '/assets/images/favicon-dontgo.ico',
+    timeout: 2000
   };
 
 
-
-  var forEach = function (collection, callback, scope) {
+  var forEach = function(collection, callback, scope) {
     if (Object.prototype.toString.call(collection) === '[object Object]') {
       for (var prop in collection) {
         if (Object.prototype.hasOwnProperty.call(collection, prop)) {
@@ -38,89 +36,80 @@
     }
   };
 
-  var extend = function ( defaults, options ) {
+  var extend = function(defaults, options) {
     var extended = {};
-    forEach(defaults, function (value, prop) {
+    forEach(defaults, function(value, prop) {
       extended[prop] = defaults[prop];
     });
-    forEach(options, function (value, prop) {
+    forEach(options, function(value, prop) {
       extended[prop] = options[prop];
     });
     return extended;
   };
 
-  var getDataOptions = function ( options ) {
-    return !options || !(typeof JSON === 'object' && typeof JSON.parse === 'function') ? {} : JSON.parse( options );
+  var checkSettings = function(options) {
+    if (typeof options.newTitle !== 'string') {
+      console.log('newTitle must be a string.');
+      return false;
+    }
+    if (typeof options.newFavicon !== 'string') {
+      console.log('newFavicon must be a string.');
+      return false;
+    }
+    if (typeof options.timeout !== 'number') {
+      console.log('timeout must be a number.');
+      return false;
+    }
+
+    return true;
   };
 
-  var getClosest = function (elem, selector) {
-    var firstChar = selector.charAt(0);
-    for ( ; elem && elem !== document; elem = elem.parentNode ) {
-      if ( firstChar === '.' ) {
-        if ( elem.classList.contains( selector.substr(1) ) ) {
-          return elem;
-        }
-      } else if ( firstChar === '#' ) {
-        if ( elem.id === selector.substr(1) ) {
-          return elem;
-        }
-      } else if ( firstChar === '[' ) {
-        if ( elem.hasAttribute( selector.substr(1, selector.length - 2) ) ) {
-          return elem;
-        }
+   var visibility = function(options) {
+    favicon = document.querySelectorAll('[rel="icon"]')[0];
+    originalTitle = document.title;
+    originalFavicon = favicon.href;
+
+    document.addEventListener('visibilitychange', function() {
+      if (document.visibilityState === 'hidden') {
+        setTimeout(function() {
+          document.title = options.newTitle;
+          favicon.setAttribute('href', options.newFavicon);
+        }, options.timeout);
+      } else {
+        document.title = originalTitle;
+        favicon.setAttribute('href', originalFavicon);
       }
+    });
+   };
+
+  pleaseDontGo.destroy = function () {
+    if (!settings) {
+      return;
     }
-    return false;
-  };
-
-
-  var eventHandler = function (event) {
-    var toggle = event.target;
-    var closest = getClosest(toggle, '[data-some-selector]');
-    if ( closest ) {
-    }
-  };
-
-  myPlugin.destroy = function () {
-
-    if ( !settings ) return;
-
-    document.documentElement.classList.remove( settings.initClass );
-
-
-    document.removeEventListener('click', eventHandler, false);
 
     settings = null;
-    eventTimeout = null;
-
+    favicon = null;
+    originalTitle = null;
+    originalFavicon = null;
   };
 
-  var eventThrottler = function () {
-    if ( !eventTimeout ) {
-      eventTimeout = setTimeout(function() {
-        eventTimeout = null;
-        actualMethod( settings );
-      }, 66);
+  pleaseDontGo.init = function ( options ) {
+    if (!supports) {
+      return;
+    }
+
+    pleaseDontGo.destroy();
+
+    settings = extend(defaults, options || {});
+
+    checked = checkSettings(settings);
+
+    if (checked) {
+      visibility(settings);
     }
   };
 
-  myPlugin.init = function ( options ) {
 
-    if ( !supports ) return;
-
-    myPlugin.destroy();
-
-    settings = extend( defaults, options || {} );
-
-    document.documentElement.classList.add( settings.initClass );
-
-
-    document.addEventListener('click', eventHandler, false);
-
-  };
-
-
-
-  return myPlugin;
+  window.pleaseDontGo = pleaseDontGo;
 
 });
