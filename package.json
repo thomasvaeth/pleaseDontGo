@@ -1,0 +1,28 @@
+{
+  "name": "please-dont-go",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/pleaseDontGo.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thomasvaeth/please-dont-go.git"
+  },
+  "homepage": "https://github.com/thomasvaeth/please-dont-go",
+  "bugs": "https://github.com/thomasvaeth/please-dont-go/issues",
+  "scripts": {
+    "start": "gulp"
+  },
+  "keywords": [
+    "fetch",
+    "instagram"
+  ],
+  "author": "Thomas Vaeth <thomas.vaeth@gmail.com> (http://thomasvaeth.com/)",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-eslint": "^3.0.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-strip-comments": "^2.4.3",
+    "gulp-uglify": "^2.0.0"
+  }
+}
